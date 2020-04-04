@@ -1,0 +1,11 @@
+# - yarn build TODO: need to fix credentials on CI when everything is stable
+language: node_js
+
+node_js:
+  - '10'
+
+install:
+  - yarn
+
+script:
+  - yarn lint

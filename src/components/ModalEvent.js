@@ -1,5 +1,6 @@
 import React from 'react'
 import format from 'date-fns/format'
+import addHours from 'date-fns/add_hours'
 import PropTypes from 'prop-types'
 
 import { FormClose } from 'grommet-icons'
@@ -41,6 +42,7 @@ export const ModalEvent = ({ hideModal, currentDay, events }) => (
     >
       {events.sort(sortyByDate).map(event => (
         <Box
+          key={event.details.name}
           elevation="small"
           direction="row"
           fill="horizontal"
@@ -51,7 +53,8 @@ export const ModalEvent = ({ hideModal, currentDay, events }) => (
             margin="small"
             color="calendar-modal-text"
           >
-            {format(new Date(event.data.date).setUTCMinutes(180), 'HH:mm')}
+            {// TODO: SET THIS AS A DYNAMIC ISO VALID TIMEZONE YADA YADA
+            format(addHours(event.details.start, 4), 'HH:mm')}
           </Text>
           <Box margin="small">
             <Text
@@ -60,24 +63,27 @@ export const ModalEvent = ({ hideModal, currentDay, events }) => (
               size="large"
               color="calendar-modal-text"
             >
-              {event.data.eventName}
+              {event.details.name}
             </Text>
 
-            {event.data.place && (
+            {event.details.description && (
               <Text a11yTitle="Event place" color="calendar-modal-text">
-                {event.data.place}
+                {event.details.description}
               </Text>
             )}
 
-            <Box margin={{ top: 'medium' }} width="xsmall">
-              <Button
-                href={event.data.eventLink}
-                label="Link"
-                a11yTitle="Event link"
-                target="_blank"
-                primary
-              />
-            </Box>
+            {event.details.link && (
+              <Box margin={{ top: 'medium' }} width="small">
+                <Button
+                  href={event.details.link}
+                  label="Event website"
+                  a11yTitle={`${event.details.name} official website`}
+                  rel="nofollow noopener"
+                  target="_blank"
+                  primary
+                />
+              </Box>
+            )}
           </Box>
         </Box>
       ))}

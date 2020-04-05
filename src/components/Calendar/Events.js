@@ -20,9 +20,9 @@ export const Events = ({ events, hasPast }) =>
               `}
             >
               {events.slice(0, maxAmountEvents + 1).map((event, i) => (
-                <Box tag="li" key={event.id}>
+                <Box tag="li" key={event.details.name}>
                   {i < maxAmountEvents && (
-                    <Event name={event.data.eventName} hasPast={hasPast} />
+                    <Event name={event.details.name} hasPast={hasPast} />
                   )}
                   {i === maxAmountEvents && (
                     <Text size="small" truncate>

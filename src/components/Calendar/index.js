@@ -4,15 +4,16 @@ import PropTypes from 'prop-types'
 import { Month } from './Month'
 
 export const Calendar = ({ showModal, events }) =>
-  events.map(monthlyCalendar => (
+  Object.keys(events).map(month => (
     <Month
-      monthlyCalendar={monthlyCalendar}
+      events={events[month]}
       showModal={showModal}
-      key={monthlyCalendar.date}
+      date={month}
+      key={month}
     />
   ))
 
 Calendar.propTypes = {
   showModal: PropTypes.func.isRequired,
-  query: PropTypes.string,
+  events: PropTypes.shape({}),
 }

@@ -5,6 +5,7 @@ import format from 'date-fns/format'
  * @see ./utils/fragments.js#FullEventPublicData
  */
 export const normalizeEvent = event => ({
+  id: event.id,
   details: {
     name: event.eventName,
     description: event.description,

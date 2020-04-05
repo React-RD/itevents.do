@@ -42,7 +42,7 @@ export const ModalEvent = ({ hideModal, currentDay, events }) => (
     >
       {events.sort(sortyByDate).map(event => (
         <Box
-          key={event.details.name}
+          key={event.id}
           elevation="small"
           direction="row"
           fill="horizontal"

@@ -3,12 +3,12 @@ import { graphql, useStaticQuery } from 'gatsby'
 import map from 'ramda/es/map'
 import compose from 'ramda/es/compose'
 import identity from 'ramda/es/identity'
-import prop from 'ramda/es/prop'
 
 import { normalizeEvent } from '../utils/normalizers'
 
+const getDataWithId = query => ({ id: query.id, ...query.data })
 export const useActiveEvents = (mapper = identity) => {
-  const prepareData = map(compose(normalizeEvent, prop('data')))
+  const prepareData = map(compose(normalizeEvent, getDataWithId))
   const data = useStaticQuery(graphql`
     {
       allAirtable(
@@ -16,6 +16,7 @@ export const useActiveEvents = (mapper = identity) => {
         sort: { fields: data___Start, order: ASC }
       ) {
         nodes {
+          id
           data {
             ...FullEventPublicData
           }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import appConfig from '../../appConfig'
 
@@ -10,7 +10,9 @@ const DEFAULT_CONFIG = {
   limitMonthInTheFuture: 2,
 }
 
-const { Provider, Consumer } = React.createContext(DEFAULT_CONFIG)
+const ConfigContext = React.createContext(DEFAULT_CONFIG)
+
+const { Provider, Consumer } = ConfigContext
 
 const ConfigProvider = ({ children }) => (
   <Provider value={appConfig}>{children}</Provider>
@@ -20,9 +22,11 @@ ConfigProvider.propTypes = {
   children: PropTypes.node,
 }
 
-const ConfigContext = {
+export const useConfig = () => useContext(ConfigContext)
+
+const AppConfigContext = {
   Provider: ConfigProvider,
   Consumer,
 }
 
-export default ConfigContext
+export default AppConfigContext

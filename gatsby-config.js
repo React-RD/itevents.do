@@ -41,6 +41,6 @@ module.exports = {
         ],
       },
     },
-    'gatsby-plugin-offline', // TODO, test offline support
+    'gatsby-plugin-offline',
   ],
 }

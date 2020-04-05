@@ -1,4 +1,5 @@
-import format from 'date-fns/format'
+import { toEventMonthFormat } from './date'
+
 /**
  *
  * @param {FullEventPublicData} event The event we need to normalize
@@ -12,7 +13,7 @@ export const normalizeEvent = event => ({
     link: event.link,
     type: event.eventType,
     start: event.start,
-    month: format(event.start, 'M/YYYY'),
+    month: toEventMonthFormat(event.start),
     end: event.end,
     duration: event.duration,
     place: event.place,

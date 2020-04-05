@@ -6,6 +6,7 @@ export const AcceptedEvents = graphql`
     description: Description
     duration: Duration
     end: End
+    link: URL
     eventName: Name
     eventType: Event_type
     place: Location

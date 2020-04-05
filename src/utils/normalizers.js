@@ -8,6 +8,7 @@ export const normalizeEvent = event => ({
   details: {
     name: event.eventName,
     description: event.description,
+    link: event.link,
     type: event.eventType,
     start: event.start,
     month: format(event.start, 'M/YYYY'),

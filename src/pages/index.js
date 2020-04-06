@@ -1,38 +1,19 @@
-import React, { PureComponent, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Text, Anchor } from 'grommet'
-import { StaticQuery, graphql } from 'gatsby'
 import { Calendar } from '../components/Calendar'
 
 import { Hero } from '../components/Hero'
 import { Layout } from '../components/PageLayout'
 
 import { ModalEvent } from '../components/ModalEvent'
-import groupEventsByMonth from '../utils/groupEventsByMonth'
-import ConfigContext from '../components/ConfigContext'
+import { useActiveEvents } from '../hooks/queries'
+import { groupEventsByMonth } from '../utils/helpers'
 
-const AIRTABLE_QUERY = graphql`
-  query eventsQuery {
-    allAirtable {
-      edges {
-        node {
-          id
-          data {
-            eventName: Name
-            date: Start
-            who: Speaker
-            place: Location
-            eventLink: Description
-          }
-        }
-      }
-    }
-  }
-`
 const CalendarPage = () => {
   const [currentDay, setIsCurrentDay] = useState(new Date())
   const [eventsOfTheDay, setEventsOfTheDay] = useState([])
   const [showModal, setShowModal] = useState(false)
-
+  const events = useActiveEvents(groupEventsByMonth)
   const toggleModal = (eventsForThisDay, selectedCalendarDate) => {
     setShowModal(!showModal)
     setEventsOfTheDay(eventsForThisDay)
@@ -43,19 +24,7 @@ const CalendarPage = () => {
     <Layout>
       <Hero />
       <Box id="calendars" animation="fadeIn">
-        <ConfigContext.Consumer>
-          {({ limitMonthInTheFuture }) => (
-            <StaticQuery
-              query={AIRTABLE_QUERY}
-              render={data => (
-                <Calendar
-                  showModal={toggleModal}
-                  events={groupEventsByMonth(data, limitMonthInTheFuture)}
-                />
-              )}
-            />
-          )}
-        </ConfigContext.Consumer>
+        <Calendar showModal={toggleModal} events={events} />
       </Box>
 
       <Text margin="medium">

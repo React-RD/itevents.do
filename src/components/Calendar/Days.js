@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { css } from 'styled-components'
-
+import range from 'ramda/es/range'
+import setDate from 'date-fns/set_date'
 import isBefore from 'date-fns/is_before'
 import isSameDay from 'date-fns/is_same_day'
 import format from 'date-fns/format'
@@ -110,24 +111,20 @@ export const Day = ({ day, events, onClick }) => {
 }
 
 export const Days = ({ days, events, month, showModal }) =>
-  Array(days)
-    .fill(null)
-    .map((x, i) => {
-      const currentDay = new Date(month.getFullYear(), month.getMonth(), i + 1)
-      const eventsOfTheDay = events.filter(event =>
-        isSameDay(event.data.date, currentDay),
-      )
-      const onClick = () => showModal(eventsOfTheDay, currentDay)
-
-      return (
-        <Day
-          key={format(currentDay, 'DD-MM-YYYY')}
-          day={currentDay}
-          events={eventsOfTheDay}
-          onClick={onClick}
-        />
-      )
-    })
+  range(1, days + 1).map(day => {
+    const currentDay = setDate(month, day)
+    const eventsOfTheDay = events.filter(event =>
+      isSameDay(event.details.start, currentDay),
+    )
+    return (
+      <Day
+        key={currentDay.toJSON()}
+        day={currentDay}
+        events={eventsOfTheDay}
+        onClick={() => showModal(eventsOfTheDay, currentDay)}
+      />
+    )
+  })
 
 Days.propTypes = {
   days: PropTypes.number.isRequired,
